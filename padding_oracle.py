@@ -108,11 +108,11 @@ def decrypt(secret: bytearray, iv: bytearray) -> bytearray:
     plain = bytearray()
     block_len = len(iv)
     real_iv = iv
-    for i in range(0, len(secret), 8):
-        block_secret = secret[i:i + 8]
+    for i in range(0, len(secret), block_len):
+        block_secret = secret[i:i + block_len]
         intermedi = burp_intermediary(block_secret, block_len)
         plain += decrypt_plain_block(intermedi, real_iv)
-        real_iv = secret[i:i + 8]
+        real_iv = secret[i:i + block_len]
     logging.info("Get Full Plain: {}".format(plain.hex()))
     return plain
 
@@ -147,7 +147,7 @@ def encrypt(plain: bytearray, block_len: int) -> bytearray:
     secret = bytearray()
     secret_block = bytearray(block_len)
     for idx in idxs[::-1]:
-        iv, secret_block = encrypt_block(secret_block, plain[idx:idx + 8])
+        iv, secret_block = encrypt_block(secret_block, plain[idx:idx + block_len])
         secret = secret_block + secret
         secret_block = iv
 
