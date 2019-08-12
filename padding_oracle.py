@@ -142,7 +142,7 @@ def encrypt_block(secret_block: bytearray,
     return iv, secret_block
 
 
-def encrypt(plain: bytearray, block_len: int) -> bytearray:
+def encrypt(plain: bytearray, block_len: int) -> (bytearray, bytearray):
     idxs = list(range(0, len(plain), block_len))
     secret = bytearray()
     secret_block = bytearray(block_len)
